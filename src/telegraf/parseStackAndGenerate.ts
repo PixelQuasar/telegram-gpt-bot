@@ -21,7 +21,7 @@ const parseStackAndGenerate = async (openai: OpenAIApi, messageStack: Array<Arra
     })
     const messages: Array<string> = messageStack.map((message) => message[1])
 
-    const promptDialog: string = userNames.map((user, index) => {
+    const promptDialog: string = rawUserNames.map((user, index) => {
         return  "Собеседник " + user + ": " + messages[index]
     }).join("\n\n")
 
