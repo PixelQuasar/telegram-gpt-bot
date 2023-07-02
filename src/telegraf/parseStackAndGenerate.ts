@@ -25,7 +25,7 @@ const parseStackAndGenerate = async (openai: OpenAIApi, messageStack: Array<Arra
         return  "Собеседник " + user + ": " + messages[index]
     }).join("\n\n")
 
-    const promptString = promptDialog + "\n\n" + config.dialogEndMessage + " Твой характер: " + config.personality
+    const promptString = promptDialog + "\n\n" + config.dialogEndMessage
 
     return await generateMessage(openai, promptString)
 }

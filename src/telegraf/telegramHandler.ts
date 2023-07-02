@@ -19,7 +19,7 @@ const telegramHandler = async (openai: OpenAIApi) => {
         messageStack.push([ctx.from.first_name, ctx.message.text ? ctx.message.text : "*файл или картинка*"])
 
         if (ctx.message.reply_to_message?.from?.id == config.botId) {
-            const oneMessageAnswer = await generateMessage(openai, ctx.message.text + "\n\nОтветь при условии, что твой характер:" + config.personality) as string
+            const oneMessageAnswer = await generateMessage(openai, ctx.message.text) as string
 
             bot.telegram.sendMessage(ctx.chat.id, oneMessageAnswer)
         }
