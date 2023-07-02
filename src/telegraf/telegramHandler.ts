@@ -14,7 +14,7 @@ const telegramHandler = async (openai: OpenAIApi) => {
     const chance = parseInt(config.chance)
 
     bot.on('text',async (ctx) => {
-        // console.log("CTX: ", ctx)
+        console.log("CTX: ", ctx)
         // console.log("REPLY:", ctx.message.reply_to_message?.from?.id)
         messageStack.push([ctx.from.first_name, ctx.message.text ? ctx.message.text : "*файл или картинка*"])
 
