@@ -16,15 +16,22 @@ TELEGRAM_KEY is your telegram bot token.
         "personality": "робот с самосознанием"
     }
 
-# botid
+## botid
 
 Value of your bot id.
 
-# queueSize
+## queueSize
 
 This value is responsible of how many last messages bot will store.
 
-# chanse
+## chanse
 
 This value is responsible of percentage of chance that bot will send random message in chat based on message queue.
 
+## dialogEndMessage
+
+This value will be added to end of the prompt.
+
+## personality
+
+This value will be added to end of the prompt and it is responsible of chatGPT message style.
