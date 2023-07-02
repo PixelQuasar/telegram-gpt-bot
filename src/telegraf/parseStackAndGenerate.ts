@@ -1,6 +1,8 @@
 import generateMessage from "../chatgpt/generate"
 import { OpenAIApi } from 'openai';
 
+const config = require('../../config.json')
+
 const parseStackAndGenerate = async (openai: OpenAIApi, messageStack: Array<Array<string>>): Promise<string | undefined> => {
     const aplhabet = "ABCDEFGHIJKLMNOPRSTUVWXYZ"
 
@@ -12,20 +14,18 @@ const parseStackAndGenerate = async (openai: OpenAIApi, messageStack: Array<Arra
         return [user, aplhabet[index]]
     })
 
-    const userNames = rawUserNames.map((user) => {
+    const userNames: Array<string> = rawUserNames.map((user) => {
         return (userMap.find((userName) => {
             return userName[0] == user
         }) as any)[1]
     })
     const messages: Array<string> = messageStack.map((message) => message[1])
 
-    const promptDialog = userNames.map((user, index) => {
+    const promptDialog: string = userNames.map((user, index) => {
         return  "Собеседник " + user + ": " + messages[index]
     }).join("\n\n")
 
-    console.log(promptDialog)
-
-    const promptString = promptDialog + "\n\n Напиши следующее 1 сообщение беседы в пределе 20 слов исходя из сообщений выше."
+    const promptString = promptDialog + "\n\n" + config.dialogEndMessage + " Твой характер: " + config.personality
 
     return await generateMessage(openai, promptString)
 }
