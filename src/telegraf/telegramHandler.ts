@@ -14,26 +14,31 @@ const telegramHandler = async (openai: OpenAIApi) => {
     const chance = parseInt(config.chance)
 
     bot.on('text',async (ctx) => {
-        console.log("CTX: ", ctx)
-        // console.log("REPLY:", ctx.message.reply_to_message?.from?.id)
-        messageStack.push([ctx.from.first_name, ctx.message.text ? ctx.message.text : "*файл или картинка*"])
+        try {
+            // console.log("CTX: ", ctx)
+            // console.log("REPLY:", ctx.message.reply_to_message?.from?.id)
+            messageStack.push([ctx.from.first_name, ctx.message.text ? ctx.message.text : "*файл или картинка*"])
 
-        if (ctx.message.reply_to_message?.from?.id == config.botId) {
-            const oneMessageAnswer = await generateMessage(openai, ctx.message.text) as string
+            if (ctx.message.reply_to_message?.from?.id == config.botId) {
+                const oneMessageAnswer = await generateMessage(openai, ctx.message.text) as string
 
-            bot.telegram.sendMessage(ctx.chat.id, oneMessageAnswer)
-        }
-
-        if (messageStack.length > stackSize) messageStack.shift()
-
-        if (randomRange(0, 100) <= chance) {
-            let answer = await parseStackAndGenerate(openai, messageStack) as string
-
-            if (answer.includes(":")) {
-                answer = answer.split(":")[1]
+                bot.telegram.sendMessage(ctx.chat.id, oneMessageAnswer)
             }
 
-            bot.telegram.sendMessage(ctx.chat.id, answer)
+            if (messageStack.length > stackSize) messageStack.shift()
+
+            if (randomRange(0, 100) <= chance) {
+                let answer = await parseStackAndGenerate(openai, messageStack) as string
+
+                if (answer.includes(":")) {
+                    answer = answer.split(":")[1]
+                }
+
+                bot.telegram.sendMessage(ctx.chat.id, answer)
+            }
+        }
+        catch (error) {
+            console.log("Telegram sending message error: ", error)
         }
     })
 
