@@ -20,9 +20,16 @@ const telegramHandler = async (openai: OpenAIApi) => {
             messageStack.push([ctx.from.first_name, ctx.message.text ? ctx.message.text : "*файл или картинка*"])
 
             if (ctx.message.reply_to_message?.from?.id == config.botId) {
-                const oneMessageAnswer = await generateMessage(openai, ctx.message.text) as string
+                // const oneMessageAnswer = await generateMessage(openai, ctx.message.text) as string
 
-                bot.telegram.sendMessage(ctx.chat.id, oneMessageAnswer)
+                // bot.telegram.sendMessage(ctx.chat.id, oneMessageAnswer)
+                let answer = await parseStackAndGenerate(openai, messageStack) as string
+
+                if (answer.includes(":")) {
+                    answer = answer.split(":")[1]
+                }
+
+                bot.telegram.sendMessage(ctx.chat.id, answer)
             }
 
             if (messageStack.length > stackSize) messageStack.shift()
